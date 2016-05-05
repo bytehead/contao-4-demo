@@ -1,12 +1,13 @@
 {
-    "name": "contao/standard-edition",
+    "name": "bytehead/contao-4-demo",
     "type": "project",
-    "description": "Contao Open Source CMS",
+    "description": "Contao 4 Demo",
     "license": "LGPL-3.0+",
     "authors": [
         {
-            "name": "Leo Feyer",
-            "homepage": "https://github.com/leofeyer"
+            "name": "David Greminger",
+            "email":"dg@1up.io",
+            "homepage":"http://1up.io"
         }
     ],
     "require": {
