@@ -1,7 +1,7 @@
 Contao 4 demo
 =======================
 
-This is an example website for Contao Open Source CMS. Visit the [project website](https://contao.org)for more information.
+This is an example website for Contao Open Source CMS. Visit the [project website](https://contao.org) for more information.
 
 
 What's inside?
