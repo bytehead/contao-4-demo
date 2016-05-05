@@ -3,9 +3,9 @@
 
 # Generated folders
 /assets/
-/files/
+#/files/
 /system/
-/templates/
+#/templates/
 /vendor/
 
 # Symlinked resources
