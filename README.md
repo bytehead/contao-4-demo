@@ -51,7 +51,7 @@ How to use it:
 
 1. Clone the repo
 2. Run `composer install` 
-3. Start the included webserver: `php app/console server:start
+3. Start the included webserver: `php app/console server:start`
 4. Install contao: `http://127.0.0.1:8000/install.php`
 5. Import the sql dump: `mysql -u user -p password contao4_database < dump.sql`
 6. Go to the backend: `http://127.0.0.1:8000/contao`
