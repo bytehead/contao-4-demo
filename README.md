@@ -49,14 +49,12 @@ The Contao offical demo includes:
 How to use it:
 --------------
 
-1. Clone the repo
-2. Run `composer install` 
-3. Start the included webserver: `php app/console server:start`
-4. Install contao: `http://127.0.0.1:8000/install.php`
-5. Import the sql dump: `mysql -u user -p password contao4_database < dump.sql`
-6. Go to the backend: `http://127.0.0.1:8000/contao`
-7. Login with user `k.jones` and password `kevinjones`
-8. Disable maintenance mode
-9. See your Contao 4 demo at `http://127.0.0.1:8000`
+1. Create project with composer: `composer create-project bytehead/contao-4-demo contao-4-demo`
+2. Start the included webserver: `php app/console server:start`
+3. Install contao: `http://127.0.0.1:8000/install.php`
+4. Import the sql dump: `mysql -u user -p password contao4_database < dump.sql`
+5. Go to the backend: `http://127.0.0.1:8000/contao`
+6. Login with user `k.jones` and password `kevinjones`
+7. See your Contao 4 demo at `http://127.0.0.1:8000`
   
 Enjoy!
