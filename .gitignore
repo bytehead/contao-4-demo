@@ -1,6 +1,9 @@
 # App config
 /app/config/parameters.yml
 
+#App cache
+app/bootstrap.php.cache
+
 # Generated folders
 /assets/
 #/files/

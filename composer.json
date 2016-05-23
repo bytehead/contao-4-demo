@@ -23,9 +23,10 @@
         "doctrine/annotations": "^1.2.7",
         "lexik/maintenance-bundle": "~2.0",
         "monolog/monolog": "~1.12",
-        "contao/contao": "~4.1",
+        "contao/contao": "~4.2",
         "incenteev/composer-parameter-handler": "~2.0"
     },
+    "minimum-stability": "dev",
     "config": {
         "preferred-install": {
             "contao/*": "source",
