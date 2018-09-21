@@ -9,22 +9,43 @@ parameters:
 
 # Framework configuration
 framework:
+    esi: { enabled: true }
+    translator: { fallbacks: ["%locale%"] }
     secret: "%secret%"
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
-        strict_requirements: ~
+        strict_requirements: "%kernel.debug%"
+    csrf_protection: ~
     templating:
         engines: ['twig']
     default_locale:  "%locale%"
     session:
         handler_id: ~
-    csrf_protection: ~
-    translator: { fallbacks: ["%locale%"] }
+    fragments: { path: /_fragment }
 
 # Contao configuration
 contao:
+    # Required parameters
     prepend_locale: "%prepend_locale%"
-    encryption_key: "%kernel.secret%"
+
+    # Optional parameters
+    web_dir:              "%kernel.project_dir%/web"
+    encryption_key:       "%kernel.secret%"
+    url_suffix:           .html
+    upload_path:          files
+    csrf_token_name:      contao_csrf_token
+    pretty_error_screens: false
+    error_level:          8183 # E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_USER_DEPRECATED
+    image:
+        bypass_cache:     false
+        target_dir:       "%kernel.project_dir%/assets/images"
+        valid_extensions: ['jpg', 'jpeg', 'gif', 'png', 'tif', 'tiff', 'bmp', 'svg', 'svgz']
+        imagine_options:
+            jpeg_quality: 80
+            interlace:    plane
+    security:
+        two_factor:
+            enforce_backend: false
 
 # Twig configuration
 twig:
@@ -37,21 +58,30 @@ doctrine:
         default_connection: default
         connections:
             default:
-                driver:   pdo_mysql
-                host:     "%database_host%"
-                port:     "%database_port%"
-                user:     "%database_user%"
+#                server_version: 5.6
+                driver: pdo_mysql
+                host: "%database_host%"
+                port: "%database_port%"
+                user: "%database_user%"
                 password: "%database_password%"
-                dbname:   "%database_name%"
-                charset:  UTF8
+                dbname: "%database_name%"
+                charset: utf8mb4
+                default_table_options:
+                    charset: utf8mb4
+                    collate: utf8mb4_unicode_ci
+                    engine: InnoDB
+        types:
+            binary_string:
+                class: "Contao\\CoreBundle\\Doctrine\\DBAL\\Types\\BinaryStringType"
+                commented: true
 
 # SwiftMailer configuration
 swiftmailer:
-    transport:  "%mailer_transport%"
-    host:       "%mailer_host%"
-    username:   "%mailer_user%"
-    password:   "%mailer_password%"
-    port:       "%mailer_port%"
+    transport: "%mailer_transport%"
+    host: "%mailer_host%"
+    username: "%mailer_user%"
+    password: "%mailer_password%"
+    port: "%mailer_port%"
     encryption: "%mailer_encryption%"
 
 # Lexik configuration
@@ -61,5 +91,21 @@ lexik_maintenance:
         attributes:
             _bypass_maintenance: true
     driver:
-        class:   "Lexik\\Bundle\\MaintenanceBundle\\Drivers\\FileDriver"
-        options: {file_path: "%kernel.root_dir%/cache/lock"}
+        class: "Lexik\\Bundle\\MaintenanceBundle\\Drivers\\FileDriver"
+        options: { file_path: "%kernel.project_dir%/var/maintenance_lock" }
+
+# Security configuration
+nelmio_security:
+    clickjacking:
+        paths:
+            '^/.*': SAMEORIGIN
+    content_type:
+        nosniff: true
+    referrer_policy:
+        enabled: true
+        policies:
+            - 'no-referrer-when-downgrade'
+            - 'strict-origin-when-cross-origin'
+    xss_protection:
+        enabled: true
+        mode_block: true

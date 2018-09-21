@@ -1,70 +1,91 @@
 {
-    "name": "bytehead/contao-4-demo",
+    "name": "vendor/my-project",
     "type": "project",
-    "description": "Contao 4 Demo",
+    "description": "Contao Open Source CMS",
     "license": "LGPL-3.0+",
     "authors": [
         {
-            "name": "David Greminger",
-            "email":"dg@1up.io",
-            "homepage":"http://1up.io"
+            "name": "Leo Feyer",
+            "homepage": "https://github.com/leofeyer"
         }
     ],
     "require": {
-        "php": ">=5.5.0",
-        "symfony/symfony": "~2.8",
-        "symfony/console": "~2.8",
-        "symfony/http-foundation": "~2.8",
-        "symfony/monolog-bundle": "~2.8",
-        "symfony/security": "~2.8",
-        "symfony/swiftmailer-bundle": "~2.3",
-        "sensio/distribution-bundle": "^3.0.12",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "doctrine/annotations": "^1.2.7",
-        "lexik/maintenance-bundle": "~2.0",
-        "monolog/monolog": "~1.12",
-        "contao/contao": "~4.2",
-        "incenteev/composer-parameter-handler": "~2.0"
+        "php": "^7.1",
+        "contao/calendar-bundle": "^4.5",
+        "contao/comments-bundle": "^4.5",
+        "contao/core-bundle": "dev-master as 4.6.5",
+        "contao/faq-bundle": "^4.5",
+        "contao/installation-bundle": "dev-master as 4.6.5",
+        "contao/listing-bundle": "^4.5",
+        "contao/news-bundle": "^4.5",
+        "contao/newsletter-bundle": "^4.5",
+        "doctrine/doctrine-bundle": "^1.6",
+        "doctrine/orm": "^2.5",
+        "incenteev/composer-parameter-handler": "^2.0",
+        "lexik/maintenance-bundle": "^2.0",
+        "nelmio/security-bundle": "^2.2",
+        "php-http/guzzle6-adapter": "^1.1",
+        "sensio/distribution-bundle": "^5.0.19",
+        "sensio/framework-extra-bundle": "^5.0",
+        "symfony/monolog-bundle": "^3.1",
+        "symfony/swiftmailer-bundle": "^3.1.5",
+        "symfony/symfony": "^3.3",
+        "symfony/web-server-bundle": "^3.3",
+        "scheb/two-factor-bundle": "^3.7",
+        "spomky-labs/otphp": "^9.1",
+        "bacon/bacon-qr-code": "^2.0"
     },
-    "minimum-stability": "dev",
+    "require-dev": {
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "git@github.com:bytehead/core-bundle.git"
+        }
+    ],
+    "conflict": {
+        "contao/core-bundle": "<4.4.1",
+        "swiftmailer/swiftmailer": "<5.4.5",
+        "symfony/swiftmailer-bundle": "2.6.* <2.6.2",
+        "symfony/symfony": "3.4.11||3.3.17"
+    },
+    "autoload": {
+        "classmap": [
+            "app/AppCache.php",
+            "app/AppKernel.php"
+        ],
+        "psr-4": {
+            "\\": "src/"
+        }
+    },
     "config": {
-        "preferred-install": {
-            "contao/*": "source",
-            "contao-components/*": "source",
-            "*": "dist"
-        },
-        "component-dir": "assets"
+        "sort-packages": true,
+        "component-dir": "assets",
+        "preferred-install": "dist"
     },
     "extra": {
-        "branch-alias": {
-            "dev-develop": "4.2.x-dev"
-        },
         "incenteev-parameters": {
             "file": "app/config/parameters.yml",
             "env-map": {
                 "secret": "CONTAO_RANDOM_SECRET"
             }
         },
+        "symfony-app-dir": "app",
+        "symfony-bin-dir": "bin",
+        "symfony-var-dir": "var",
+        "symfony-web-dir": "web",
         "symfony-assets-install": "relative"
     },
     "scripts": {
-        "post-install-cmd": [
+        "setup-scripts": [
             "Contao\\CoreBundle\\Composer\\ScriptHandler::generateRandomSecret",
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
             "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
             "Contao\\CoreBundle\\Composer\\ScriptHandler::addDirectories",
             "Contao\\CoreBundle\\Composer\\ScriptHandler::generateSymlinks"
         ],
-        "post-update-cmd": [
-            "Contao\\CoreBundle\\Composer\\ScriptHandler::generateRandomSecret",
-            "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Contao\\CoreBundle\\Composer\\ScriptHandler::addDirectories",
-            "Contao\\CoreBundle\\Composer\\ScriptHandler::generateSymlinks"
-        ]
+        "post-install-cmd": [ "@setup-scripts" ],
+        "post-update-cmd": [ "@setup-scripts" ]
     }
 }

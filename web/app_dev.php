@@ -1,13 +1,5 @@
 <?php
 
-/**
- * This file is part of Contao.
- *
- * Copyright (c) 2005-2016 Leo Feyer
- *
- * @license LGPL-3.0+
- */
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Debug\Debug;
 
@@ -22,33 +14,35 @@ $accessKey = '';
 
 if (isset($_SERVER['HTTP_CLIENT_IP'])
     || isset($_SERVER['HTTP_X_FORWARDED_FOR'])
-    || !(in_array(@$_SERVER['REMOTE_ADDR'], array('127.0.0.1', 'fe80::1', '::1')) || php_sapi_name() === 'cli-server')
+    || !(in_array(@$_SERVER['REMOTE_ADDR'], ['127.0.0.1', 'fe80::1', '::1']) || php_sapi_name() === 'cli-server')
 ) {
     if ('' === $accessKey) {
         header('HTTP/1.0 403 Forbidden');
-        exit('You are not allowed to access this file. Check ' . basename(__FILE__) . ' for more information.');
+        die(sprintf('You are not allowed to access this file. Check %s for more information.', basename(__FILE__)));
     }
 
-    if (!isset($_SERVER['PHP_AUTH_USER'])
-        || !isset($_SERVER['PHP_AUTH_PW'])
-        || hash('sha512', $_SERVER['PHP_AUTH_USER'] . ':' . $_SERVER['PHP_AUTH_PW']) !== $accessKey
+    if (!isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW'])
+        || hash('sha512', $_SERVER['PHP_AUTH_USER'].':'.$_SERVER['PHP_AUTH_PW']) !== $accessKey
     ) {
         header('WWW-Authenticate: Basic realm="Contao debug"');
         header('HTTP/1.0 401 Unauthorized');
-        exit('You are not allowed to access this file. Check ' . basename(__FILE__) . ' for more information.');
+        die(sprintf('You are not allowed to access this file. Check %s for more information.', basename(__FILE__)));
     }
 }
 
 unset($accessKey);
 
-$loader = require_once __DIR__ . '/../app/bootstrap.php.cache';
-Debug::enable();
+/** @var \Composer\Autoload\ClassLoader $loader */
+$loader = require __DIR__.'/../vendor/autoload.php';
 
-require_once __DIR__ . '/../app/AppKernel.php';
+Debug::enable();
 
 $kernel = new AppKernel('dev', true);
 
-// Handle the request
+if (PHP_VERSION_ID < 70000) {
+    $kernel->loadClassCache();
+}
+
 $request = Request::createFromGlobals();
 $response = $kernel->handle($request);
 $response->send();

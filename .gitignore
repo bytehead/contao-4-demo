@@ -30,3 +30,7 @@ app/bootstrap.php.cache
 
 # IDE stuff
 /.idea
+/.web-server-pid
+
+var/cache/*
+var/logs/*

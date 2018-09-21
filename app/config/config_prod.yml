@@ -1,17 +1,30 @@
 imports:
     - { resource: config.yml }
 
-# Monolog configuration
+#framework:
+#    validation:
+#        cache: validator.mapping.cache.apc
+#    serializer:
+#        cache: serializer.mapping.cache.apc
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: apc
+#        result_cache_driver: apc
+#        query_cache_driver: apc
+
 monolog:
     handlers:
+        contao:
+            type: service
+            id:   contao.monolog.handler
         main:
             type:         fingers_crossed
             action_level: error
             handler:      nested
         nested:
-            type:      rotating_file
-            max_files: 10
-            path:      "%kernel.logs_dir%/%kernel.environment%.log"
-            level:     info
+            type:  stream
+            path:  "%kernel.logs_dir%/%kernel.environment%.log"
+            level: debug
         console:
-            type: console
+            type:  console

@@ -1,9 +1,9 @@
 <?php
 
-/**
+/*
  * This file is part of Contao.
  *
- * Copyright (c) 2005-2016 Leo Feyer
+ * Copyright (c) 2005-2017 Leo Feyer
  *
  * @license LGPL-3.0+
  */
@@ -25,23 +25,29 @@ class AppKernel extends Kernel
             new Symfony\Bundle\MonologBundle\MonologBundle(),
             new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
+            new Doctrine\Bundle\DoctrineCacheBundle\DoctrineCacheBundle(),
+            new Knp\Bundle\MenuBundle\KnpMenuBundle(),
             new Knp\Bundle\TimeBundle\KnpTimeBundle(),
             new Lexik\Bundle\MaintenanceBundle\LexikMaintenanceBundle(),
+            new Nelmio\CorsBundle\NelmioCorsBundle(),
+            new Nelmio\SecurityBundle\NelmioSecurityBundle(),
             new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new Contao\CoreBundle\ContaoCoreBundle(),
+            new Contao\InstallationBundle\ContaoInstallationBundle(),
             new Contao\CalendarBundle\ContaoCalendarBundle(),
             new Contao\CommentsBundle\ContaoCommentsBundle(),
             new Contao\FaqBundle\ContaoFaqBundle(),
             new Contao\ListingBundle\ContaoListingBundle(),
             new Contao\NewsBundle\ContaoNewsBundle(),
             new Contao\NewsletterBundle\ContaoNewsletterBundle(),
+            new Scheb\TwoFactorBundle\SchebTwoFactorBundle(),
         ];
 
         if (in_array($this->getEnvironment(), ['dev', 'test'])) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
             $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
-            $bundles[] = new Contao\InstallationBundle\ContaoInstallationBundle();
+            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
         }
 
         return $bundles;
@@ -50,8 +56,32 @@ class AppKernel extends Kernel
     /**
      * {@inheritdoc}
      */
+    public function getRootDir()
+    {
+        return __DIR__;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getCacheDir()
+    {
+        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getLogDir()
+    {
+        return dirname(__DIR__).'/var/logs';
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function registerContainerConfiguration(LoaderInterface $loader)
     {
-        $loader->load(__DIR__ . '/config/config_' . $this->getEnvironment() . '.yml');
+        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
     }
 }
